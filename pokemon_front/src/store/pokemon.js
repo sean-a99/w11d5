@@ -46,6 +46,10 @@ export const getOnePokemon = (pokemonId) => async dispatch => {
 	}
 }
 
+export const createPokemon = (pokemon) => async dispatch => {
+  const repsonse = await fetch(`/api/pokemon`)
+}
+
 const initialState = {
   list: [],
   types: []
