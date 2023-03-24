@@ -49,8 +49,11 @@ const CreatePokemonForm = ({ hideForm }) => {
       move2,
       moves: [move1, move2]
     };
+    debugger
+    const newPokemon =  await postPokemon(payload)
+    debugger
 
-    dispatch(createPokemon(payload));
+    dispatch(createPokemon(newPokemon));
 
     let createdPokemon;
     if (createdPokemon) {
@@ -58,6 +61,19 @@ const CreatePokemonForm = ({ hideForm }) => {
       hideForm();
     }
   };
+
+  const postPokemon = payload => {
+    return fetch("/api/pokemon", {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+    });
+  }
+    
+
 
   const handleCancelClick = (e) => {
     e.preventDefault();
@@ -116,7 +132,6 @@ const CreatePokemonForm = ({ hideForm }) => {
           )}
         </select>
         <button 
-          onClick={handleSubmit}
           type="submit">Create new Pokemon</button>
         <button type="button" onClick={handleCancelClick}>Cancel</button>
       </form>
