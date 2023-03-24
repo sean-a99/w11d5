@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createPokemon, getPokemonTypes } from '../store/pokemon';
+import { createPokemon, getPokemonTypes, getPokemon, addOnePokemon } from '../store/pokemon';
 
 const CreatePokemonForm = ({ hideForm }) => {
   const pokeTypes = useSelector(state => state.pokemon.types);
@@ -49,12 +49,9 @@ const CreatePokemonForm = ({ hideForm }) => {
       move2,
       moves: [move1, move2]
     };
-    debugger
-    const newPokemon =  await postPokemon(payload)
-    debugger
 
-    dispatch(createPokemon(newPokemon));
-
+    postPokemon(payload)
+	
     let createdPokemon;
     if (createdPokemon) {
       history.push(`/pokemon/${createdPokemon.id}`);
@@ -63,18 +60,18 @@ const CreatePokemonForm = ({ hideForm }) => {
   };
 
   const postPokemon = payload => {
-    return fetch("/api/pokemon", {
+    fetch("/api/pokemon", {
     method: 'POST',
     body: JSON.stringify(payload),
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     }
-    });
+    })
+		.then(res => res.json())
+		.then(data => dispatch(addOnePokemon(data)));
   }
     
-
-
   const handleCancelClick = (e) => {
     e.preventDefault();
     hideForm();
